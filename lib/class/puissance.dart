@@ -4,8 +4,9 @@ class Puissance4{
   String joueur1 = "X";
   String joueur2 = "O";
 
-  Color couleurJ1 = Colors.red;
-  Color couleurJ2 = Colors.yellow;
+  String nameJoueur1 = "joueur 1";
+  String nameJoueur2 = "joueur 2";
+
   Color currentColor = Colors.black38;
 
   int scoreJ1 = 0;
@@ -13,16 +14,15 @@ class Puissance4{
   
   int bestScore = 0;
 
-  int code = 0;
-
   String currentPlayer = "";
+  String nomPlayer = "";
   bool gameEnd = false;
   List<String> estOccuper = [];
 
   void initGame(){
     currentPlayer = joueur1;
+    nomPlayer = nameJoueur1;
     gameEnd = false;
-    code = 0;
     estOccuper = [
       "", "", "", "", "", "",
       "", "", "", "", "", "",
@@ -40,20 +40,27 @@ class Puissance4{
     bestScore = 0;
   }
 
+  int getBestScore(){
+    if(scoreJ1 > scoreJ2){
+      bestScore = scoreJ1;
+    } else {
+      bestScore = scoreJ2;
+    }
+    return bestScore;
+  }
+
   void changerTour(){
     if(currentPlayer == joueur1){
-      currentColor = couleurJ2;
-      code = 2;
       currentPlayer = joueur2;
+      nomPlayer = nameJoueur2;
     } else{
       currentPlayer = joueur1;
-      code = 1;
-      currentColor = couleurJ1;
+      nomPlayer = nameJoueur1;
     }
   }
 
   String headerText(){
-    String tour = currentPlayer;
+    String tour = nomPlayer;
     String text = "Tour de $tour";
     return text;
   }

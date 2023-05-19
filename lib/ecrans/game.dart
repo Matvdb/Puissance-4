@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:puissance_4/class/puissance.dart';
-import 'package:puissance_4/ecrans/home.dart';
 
 class Game extends StatefulWidget {
-  const Game({super.key});
+  const Game({super.key, required this.title});
+
+  final String title;
 
   @override
   State<Game> createState() => _GameState();
@@ -48,8 +49,11 @@ class _GameState extends State<Game> {
         });
       },
       child: Container(
-        color: _puissance4.currentColor,
         margin: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: _puissance4.currentColor,
+        ),
         child: Center(
           child: Text(
             _puissance4.estOccuper[index],
@@ -123,15 +127,27 @@ class _GameState extends State<Game> {
             ],
           ));
           _puissance4.gameEnd = true;
-          if(grille0 == "Joueur 1"){
+          if(grille0 == _puissance4.joueur1){
             _puissance4.scoreJ1++;
-          } else if(grille0 == "Joueur 2"){
+          } else if(grille0 == _puissance4.joueur2){
             _puissance4.scoreJ2++;
           }
           return;
         }
       }
     }
+  }
+
+  _restartGame(){
+    return IconButton(
+      onPressed: (){
+        setState(() {
+          _puissance4.initGame();
+          _puissance4.initScore();
+        });
+      }, 
+      icon: const Icon(Icons.restart_alt_rounded)
+    );
   }
 
   Future<void> _messageFin(Row phrase) async {
@@ -153,14 +169,6 @@ class _GameState extends State<Game> {
               child: const Text('Fermer'),
               onPressed: () {
                 Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: const Text('Quitter'),
-              onPressed: () {
-                setState(() {
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Home()));
-                });
               },
             ),
             TextButton(
@@ -190,10 +198,53 @@ class _GameState extends State<Game> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(_puissance4.headerText())
+                Text(_puissance4.headerText(),
+                  style: const TextStyle(
+                    fontSize: 18.0,
+                  ),
+                ),
               ],
             ),
+            const Padding(padding: EdgeInsets.all(10)),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Text("Score de ${_puissance4.nameJoueur1}",
+                  style: const TextStyle(
+                    fontSize: 18.0,
+                  ),
+                ),
+                Text("Score de ${_puissance4.nameJoueur2}",
+                  style: const TextStyle(
+                    fontSize: 18.0,
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Text(_puissance4.scoreJ1.toString(),
+                  style: const TextStyle(
+                    fontSize: 18.0,
+                  ),
+                ),
+                Text(_puissance4.scoreJ2.toString(),
+                  style: const TextStyle(
+                    fontSize: 18.0,
+                  ),
+                ),
+              ],
+            ),
+            const Padding(padding: EdgeInsets.all(5)),
+            const Align(
+              alignment: Alignment.center,
+              child: Text("Meilleur score", style: TextStyle(fontSize: 15.0),),
+            ),
+            Text(_puissance4.getBestScore().toString()),
+            const Padding(padding: EdgeInsets.all(10)),
             _gameContainer(),
+            _restartGame(),
           ],
         ),
       ),

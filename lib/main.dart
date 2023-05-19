@@ -12,12 +12,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Puissance 4',
       theme: ThemeData(
         primaryColor: Colors.blue,
       ),
       debugShowCheckedModeBanner: false,
-      home: const Game(),
+      home: const Game(title: "Puissance 4"),
     );
   }
 }
